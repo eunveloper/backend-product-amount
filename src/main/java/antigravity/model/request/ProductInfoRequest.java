@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class ProductInfoRequest {
-    private int productId;
-    private int[] couponIds;
+    private Integer productId;
+    private Integer[] couponIds;
 }
