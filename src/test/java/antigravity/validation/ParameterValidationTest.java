@@ -2,7 +2,6 @@ package antigravity.validation;
 
 
 import antigravity.exception.ParameterValidateException;
-import antigravity.model.request.ProductInfoRequest;
 import antigravity.repository.ProductRepository;
 import antigravity.service.ProductService;
 import org.junit.jupiter.api.Assertions;
@@ -12,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static antigravity.GenerateParam.createProductInfoReq;
 
 @ExtendWith(MockitoExtension.class)
 public class ParameterValidationTest {
@@ -37,19 +38,19 @@ public class ParameterValidationTest {
         int productId = 1;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(nullProductId, promotionIds));
+            productService.checkValidateParam(createProductInfoReq(nullProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(minusProductId, promotionIds));
+            productService.checkValidateParam(createProductInfoReq(minusProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(zeroProductId, promotionIds));
+            productService.checkValidateParam(createProductInfoReq(zeroProductId, promotionIds));
         });
 
         Assertions.assertDoesNotThrow(
-            () -> productService.checkValidateParam(createParam(productId, promotionIds))
+            () -> productService.checkValidateParam(createProductInfoReq(productId, promotionIds))
         );
     }
 
@@ -62,29 +63,20 @@ public class ParameterValidationTest {
         Integer[] promotionIds = {1, 2};
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(1, zeroPromotionIds));
+            productService.checkValidateParam(createProductInfoReq(1, zeroPromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(1, threePromotionIds));
+            productService.checkValidateParam(createProductInfoReq(1, threePromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createParam(1, minusPromotionIds));
+            productService.checkValidateParam(createProductInfoReq(1, minusPromotionIds));
         });
 
         Assertions.assertDoesNotThrow(
-            () ->  productService.checkValidateParam(createParam(1, promotionIds))
+            () ->  productService.checkValidateParam(createProductInfoReq(1, promotionIds))
         );
     }
-
-    private ProductInfoRequest createParam(Integer productId, Integer[] promotionIds) {
-        ProductInfoRequest request = ProductInfoRequest.builder()
-                .productId(productId)
-                .promotionIds(promotionIds)
-                .build();
-        return request;
-    }
-
 
 }

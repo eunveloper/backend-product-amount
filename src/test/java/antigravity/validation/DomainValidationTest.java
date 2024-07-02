@@ -64,7 +64,7 @@ public class DomainValidationTest {
             productRepository.getPromotionProducts(productId, notExistPromotionIds);
         });
 
-        Assertions.assertTrue(
+        Assertions.assertNotNull(
             productRepository.getPromotionProducts(productId, existPromotionsIds)
         );
     }

@@ -46,7 +46,7 @@ public class ProductRepository {
         return promotions;
     }
 
-    public boolean getPromotionProducts(int productId, Integer[] promotionIds) {
+    public List<Promotion> getPromotionProducts(int productId, Integer[] promotionIds) {
         String query = "SELECT * " +
                         "FROM `promotion_products` pp " +
                         "JOIN `promotion` p " +
@@ -63,7 +63,7 @@ public class ProductRepository {
         if (promotions.size() != 2) {
             throw new NotFoundDomainException("적용되지 않는 상품 프로모션 정보입니다.");
         }
-        return true;
+        return promotions;
     }
 
     private RowMapper<Product> productRowMapper() {
