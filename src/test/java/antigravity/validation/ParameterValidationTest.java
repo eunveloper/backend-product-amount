@@ -32,8 +32,8 @@ public class ParameterValidationTest {
         Integer[] promotionIds = {1, 2};
 
         Integer nullProductId = null;
-        Integer minusProductId = -1;
-        Integer zeroProductId = 0;
+        int minusProductId = -1;
+        int zeroProductId = 0;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
             productService.getProductAmount(createParam(nullProductId, promotionIds));
