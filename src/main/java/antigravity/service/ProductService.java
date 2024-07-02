@@ -16,11 +16,14 @@ public class ProductService {
     public ProductAmountResponse getProductAmount(ProductInfoRequest request) {
         // 비지니스 로직을 실행하기 전, 파라미터 검증하기
         checkValidateParam(request);
+
         Product product = repository.getProduct(request.getProductId());
-        return ProductAmountResponse.builder().build();
+
+
+        return ProductAmountResponse.builder().discountPrice(product.getPrice()).build();
     }
 
-    private void checkValidateParam(ProductInfoRequest request) {
+    public void checkValidateParam(ProductInfoRequest request) {
         Integer productId = request.getProductId();
         Integer[] promotionIds = request.getPromotionIds();
         if (productId == null) {

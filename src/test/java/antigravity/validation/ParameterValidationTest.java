@@ -37,19 +37,19 @@ public class ParameterValidationTest {
         int productId = 1;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(nullProductId, promotionIds));
+            productService.checkValidateParam(createParam(nullProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(minusProductId, promotionIds));
+            productService.checkValidateParam(createParam(minusProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(zeroProductId, promotionIds));
+            productService.checkValidateParam(createParam(zeroProductId, promotionIds));
         });
 
-        Assertions.assertNotNull(
-                productService.getProductAmount(createParam(productId, promotionIds))
+        Assertions.assertDoesNotThrow(
+            () -> productService.checkValidateParam(createParam(productId, promotionIds))
         );
     }
 
@@ -62,19 +62,19 @@ public class ParameterValidationTest {
         Integer[] promotionIds = {1, 2};
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, zeroPromotionIds));
+            productService.checkValidateParam(createParam(1, zeroPromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, threePromotionIds));
+            productService.checkValidateParam(createParam(1, threePromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, minusPromotionIds));
+            productService.checkValidateParam(createParam(1, minusPromotionIds));
         });
 
-        Assertions.assertNotNull(
-                productService.getProductAmount(createParam(1, promotionIds))
+        Assertions.assertDoesNotThrow(
+            () ->  productService.checkValidateParam(createParam(1, promotionIds))
         );
     }
 
