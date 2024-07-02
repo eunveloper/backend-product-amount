@@ -29,49 +29,49 @@ public class ParameterValidationTest {
     @Test
     @DisplayName("가격을 측정 할 상품 아이디는 필수 정수 값")
     void requiredProductId() {
-        Integer[] couponIds = {1, 2};
+        Integer[] promotionIds = {1, 2};
 
         Integer nullProductId = null;
         Integer minusProductId = -1;
         Integer zeroProductId = 0;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(nullProductId, couponIds));
+            productService.getProductAmount(createParam(nullProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(minusProductId, couponIds));
+            productService.getProductAmount(createParam(minusProductId, promotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(zeroProductId, couponIds));
+            productService.getProductAmount(createParam(zeroProductId, promotionIds));
         });
     }
 
     @Test
-    @DisplayName("가격을 측정 할 쿠폰 아이디는 필수 값 이며 항상 두개 정수 값")
-    void requiredTwoPromotionIds() {
-        Integer[] zeroCouponIds = null;
-        Integer[] threeCouponIds = {1, 2, 3};
-        Integer[] minusCouponIds = {1, -2};
+    @DisplayName("가격을 측정 할 프로모션 아이디는 필수 값 이며 항상 두개 정수 값")
+    void requiredPromotionIds() {
+        Integer[] zeroPromotionIds = null;
+        Integer[] threePromotionIds = {1, 2, 3};
+        Integer[] minusPromotionIds = {1, -2};
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, zeroCouponIds));
+            productService.getProductAmount(createParam(1, zeroPromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, threeCouponIds));
+            productService.getProductAmount(createParam(1, threePromotionIds));
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.getProductAmount(createParam(1, minusCouponIds));
+            productService.getProductAmount(createParam(1, minusPromotionIds));
         });
     }
 
-    private ProductInfoRequest createParam(Integer productId, Integer[] couponIds) {
+    private ProductInfoRequest createParam(Integer productId, Integer[] promotionIds) {
         ProductInfoRequest request = ProductInfoRequest.builder()
                 .productId(productId)
-                .couponIds(couponIds)
+                .promotionIds(promotionIds)
                 .build();
         return request;
     }
