@@ -1,7 +1,6 @@
-package antigravity.validation;
+package antigravity.repository;
 
 import antigravity.exception.NotFoundDomainException;
-import antigravity.repository.ProductRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 @SpringBootTest
-public class DomainValidationTest {
+public class RepositoryGetTest {
 
     private ProductRepository productRepository;
 

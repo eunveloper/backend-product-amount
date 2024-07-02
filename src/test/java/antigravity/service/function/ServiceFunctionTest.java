@@ -1,4 +1,4 @@
-package antigravity.function;
+package antigravity.service.function;
 
 import antigravity.config.PromotionType;
 import antigravity.domain.entity.Promotion;

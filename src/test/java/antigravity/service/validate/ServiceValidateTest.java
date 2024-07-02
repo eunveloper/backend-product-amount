@@ -1,4 +1,4 @@
-package antigravity.validation;
+package antigravity.service.validate;
 
 
 import antigravity.exception.ParameterValidateException;
@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static antigravity.GenerateParam.createProductInfoReq;
 
 @ExtendWith(MockitoExtension.class)
-public class ParameterValidationTest {
+public class ServiceValidateTest {
 
     private ProductService productService;
 

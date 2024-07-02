@@ -1,4 +1,4 @@
-package antigravity.function;
+package antigravity.service;
 
 import antigravity.model.response.ProductAmountResponse;
 import antigravity.repository.ProductRepository;
