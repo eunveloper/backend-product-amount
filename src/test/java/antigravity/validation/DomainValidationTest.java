@@ -53,4 +53,20 @@ public class DomainValidationTest {
         );
     }
 
+    @Test
+    @DisplayName("적용 가능한 상품 프로모션 정보로 조회")
+    void existProductPromotion() {
+        int productId = 1;
+        Integer[] notExistPromotionIds = {3, 4};
+        Integer[] existPromotionsIds = {1, 2};
+
+        Assertions.assertThrows(NotFoundDomainException.class, () -> {
+            productRepository.existProductPromotion(productId, notExistPromotionIds);
+        });
+
+        Assertions.assertTrue(
+            productRepository.existProductPromotion(productId, existPromotionsIds)
+        );
+    }
+
 }
