@@ -34,6 +34,7 @@ public class ParameterValidationTest {
         Integer nullProductId = null;
         int minusProductId = -1;
         int zeroProductId = 0;
+        int productId = 1;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
             productService.getProductAmount(createParam(nullProductId, promotionIds));
@@ -46,6 +47,10 @@ public class ParameterValidationTest {
         Assertions.assertThrows(ParameterValidateException.class, () -> {
             productService.getProductAmount(createParam(zeroProductId, promotionIds));
         });
+
+        Assertions.assertNotNull(
+                productService.getProductAmount(createParam(productId, promotionIds))
+        );
     }
 
     @Test
@@ -54,6 +59,7 @@ public class ParameterValidationTest {
         Integer[] zeroPromotionIds = null;
         Integer[] threePromotionIds = {1, 2, 3};
         Integer[] minusPromotionIds = {1, -2};
+        Integer[] promotionIds = {1, 2};
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
             productService.getProductAmount(createParam(1, zeroPromotionIds));
@@ -66,6 +72,10 @@ public class ParameterValidationTest {
         Assertions.assertThrows(ParameterValidateException.class, () -> {
             productService.getProductAmount(createParam(1, minusPromotionIds));
         });
+
+        Assertions.assertNotNull(
+                productService.getProductAmount(createParam(1, promotionIds))
+        );
     }
 
     private ProductInfoRequest createParam(Integer productId, Integer[] promotionIds) {

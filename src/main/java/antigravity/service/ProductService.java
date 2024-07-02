@@ -17,7 +17,7 @@ public class ProductService {
         // 비지니스 로직을 실행하기 전, 파라미터 검증하기
         checkValidateParam(request);
         Product product = repository.getProduct(request.getProductId());
-        return null;
+        return ProductAmountResponse.builder().build();
     }
 
     private void checkValidateParam(ProductInfoRequest request) {

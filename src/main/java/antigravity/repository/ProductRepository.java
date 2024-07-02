@@ -4,6 +4,7 @@ import antigravity.domain.entity.Product;
 import antigravity.domain.entity.Promotion;
 import antigravity.exception.NotFoundDomainException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,12 +23,12 @@ public class ProductRepository {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", productId);
 
-        Product product =  namedParameterJdbcTemplate.queryForObject(query, params, productRowMapper());
-        if (product == null) {
+        try {
+            Product product =  namedParameterJdbcTemplate.queryForObject(query, params, productRowMapper());
+            return product;
+        } catch (EmptyResultDataAccessException e) {
             throw new NotFoundDomainException("존재하지 않는 상품의 아이디 입니다.");
         }
-
-        return product;
     }
 
     public List<Promotion> getPromotions(Integer[] promotionIds) {
