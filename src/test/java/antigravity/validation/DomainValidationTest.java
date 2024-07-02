@@ -61,11 +61,11 @@ public class DomainValidationTest {
         Integer[] existPromotionsIds = {1, 2};
 
         Assertions.assertThrows(NotFoundDomainException.class, () -> {
-            productRepository.existProductPromotion(productId, notExistPromotionIds);
+            productRepository.getPromotionProducts(productId, notExistPromotionIds);
         });
 
         Assertions.assertTrue(
-            productRepository.existProductPromotion(productId, existPromotionsIds)
+            productRepository.getPromotionProducts(productId, existPromotionsIds)
         );
     }
 

@@ -46,16 +46,21 @@ public class ProductRepository {
         return promotions;
     }
 
-    public boolean existProductPromotion(int productId, Integer[] promotionIds) {
-        String query = "SELECT COUNT(*) AS count FROM `promotion_products` WHERE product_id = :productId AND promotion_id in (:promotionId)";
+    public boolean getPromotionProducts(int productId, Integer[] promotionIds) {
+        String query = "SELECT * " +
+                        "FROM `promotion_products` pp " +
+                        "JOIN `promotion` p " +
+                        "ON pp.promotion_id = p.id " +
+                        "WHERE pp.product_id = :productId " +
+                        "AND pp.promotion_id in (:promotionId)";
         List<Integer> promotionIdList = List.of(promotionIds);
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("productId", productId);
         params.addValue("promotionId", promotionIdList);
 
-        int count = namedParameterJdbcTemplate.queryForObject(query, params, (rs, rowNum) -> rs.getInt("count"));
-        if (count != 2) {
+        List<Promotion> promotions = namedParameterJdbcTemplate.query(query, params, promotionRowMapper());
+        if (promotions.size() != 2) {
             throw new NotFoundDomainException("적용되지 않는 상품 프로모션 정보입니다.");
         }
         return true;
@@ -76,6 +81,8 @@ public class ProductRepository {
                 .name(rs.getString("name"))
                 .discount_type(rs.getString("discount_type"))
                 .discount_value(rs.getInt("discount_value"))
+                .use_started_at(rs.getDate("use_started_at"))
+                .use_ended_at(rs.getDate("use_ended_at"))
                 .build();
     }
 
