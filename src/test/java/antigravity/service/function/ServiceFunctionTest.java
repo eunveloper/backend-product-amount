@@ -1,32 +1,17 @@
 package antigravity.service.function;
 
 import antigravity.config.PromotionType;
+import antigravity.domain.entity.Product;
 import antigravity.domain.entity.Promotion;
 import antigravity.exception.InvalidBusinessDataException;
-import antigravity.repository.ProductRepository;
-import antigravity.service.ProductService;
+import antigravity.model.response.ProductAmountResponse;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 public class ServiceFunctionTest {
 
     private final int originPrice = 50000;
-
-    private ProductService productService;
-
-    @Mock
-    private ProductRepository productRepository;
-
-    @BeforeEach
-    void setUp() {
-        productService = new ProductService(productRepository);
-    }
 
     @Test
     @DisplayName("상품의 금액은 최소 ₩10,000 최대 ₩10,000,000")
@@ -36,15 +21,15 @@ public class ServiceFunctionTest {
         int possiblePrice = 35000;
 
         Assertions.assertThrows(InvalidBusinessDataException.class, () -> {
-            productService.checkProductPrice(impossibleMinPrice);
+            Product.builder().price(impossibleMinPrice).build().checkProductPrice();
         });
 
         Assertions.assertThrows(InvalidBusinessDataException.class, () -> {
-            productService.checkProductPrice(impossibleMaxPrice);
+            Product.builder().price(impossibleMaxPrice).build().checkProductPrice();
         });
 
         Assertions.assertDoesNotThrow(
-                () -> productService.checkProductPrice(possiblePrice)
+                () -> Product.builder().price(possiblePrice).build().checkProductPrice()
         );
     }
 
@@ -53,7 +38,10 @@ public class ServiceFunctionTest {
     void checkProductFinalPriceUnit() {
         int discountPrice = 3950;
 
-        Assertions.assertEquals(productService.calcFinalPrice(originPrice, discountPrice), 40000);
+        ProductAmountResponse response = ProductAmountResponse.builder().originPrice(originPrice).discountPrice(discountPrice).build();
+        response.calcFinalPrice();
+
+        Assertions.assertEquals(response.getFinalPrice(), 40000);
     }
 
     @Test
@@ -62,7 +50,7 @@ public class ServiceFunctionTest {
         int discountPrice = 53950;
 
         Assertions.assertThrows(InvalidBusinessDataException.class, () -> {
-            productService.calcFinalPrice(originPrice, discountPrice);
+            ProductAmountResponse.builder().originPrice(originPrice).discountPrice(discountPrice).build().calcFinalPrice();
         });
     }
 
@@ -75,7 +63,7 @@ public class ServiceFunctionTest {
                 .build();
 
         Assertions.assertThrows(InvalidBusinessDataException.class, () -> {
-            productService.calcDiscountPrice(originPrice, promotion);
+            ProductAmountResponse.builder().originPrice(originPrice).build().calcDiscountPrice(promotion);
         });
     }
 
@@ -87,7 +75,10 @@ public class ServiceFunctionTest {
                 .discount_value(30000)
                 .build();
 
-        Assertions.assertEquals(productService.calcDiscountPrice(originPrice, promotion), 30000);
+        ProductAmountResponse response = ProductAmountResponse.builder().originPrice(originPrice).build();
+        response.calcDiscountPrice(promotion);
+
+        Assertions.assertEquals(response.getDiscountPrice(), 30000);
     }
 
     @Test
@@ -99,7 +90,7 @@ public class ServiceFunctionTest {
                 .build();
 
         Assertions.assertThrows(InvalidBusinessDataException.class, () -> {
-            productService.calcDiscountPrice(originPrice, promotion);
+            ProductAmountResponse.builder().originPrice(originPrice).build().calcDiscountPrice(promotion);
         });
     }
 
@@ -111,7 +102,10 @@ public class ServiceFunctionTest {
                 .discount_value(15)
                 .build();
 
-        Assertions.assertEquals(productService.calcDiscountPrice(originPrice, promotion), 7500);
+        ProductAmountResponse response = ProductAmountResponse.builder().originPrice(originPrice).build();
+        response.calcDiscountPrice(promotion);
+
+        Assertions.assertEquals(response.getDiscountPrice(), 7500);
     }
 
 }

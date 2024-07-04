@@ -2,30 +2,13 @@ package antigravity.service.validate;
 
 
 import antigravity.exception.ParameterValidateException;
-import antigravity.repository.ProductRepository;
-import antigravity.service.ProductService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static antigravity.GenerateParam.createProductInfoReq;
 
-@ExtendWith(MockitoExtension.class)
 public class ServiceValidateTest {
-
-    private ProductService productService;
-
-    @Mock
-    private ProductRepository productRepository;
-
-    @BeforeEach
-    void setUp() {
-        productService = new ProductService(productRepository);
-    }
 
     @Test
     @DisplayName("가격을 측정 할 상품 아이디는 필수 정수 값")
@@ -38,19 +21,19 @@ public class ServiceValidateTest {
         int productId = 1;
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(nullProductId, promotionIds));
+            createProductInfoReq(nullProductId, promotionIds).checkValidateParam();
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(minusProductId, promotionIds));
+            createProductInfoReq(minusProductId, promotionIds).checkValidateParam();
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(zeroProductId, promotionIds));
+            createProductInfoReq(zeroProductId, promotionIds).checkValidateParam();
         });
 
         Assertions.assertDoesNotThrow(
-            () -> productService.checkValidateParam(createProductInfoReq(productId, promotionIds))
+            () -> createProductInfoReq(productId, promotionIds).checkValidateParam()
         );
     }
 
@@ -63,19 +46,19 @@ public class ServiceValidateTest {
         Integer[] promotionIds = {1, 2};
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(1, zeroPromotionIds));
+            createProductInfoReq(1, zeroPromotionIds).checkValidateParam();
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(1, threePromotionIds));
+            createProductInfoReq(1, threePromotionIds).checkValidateParam();
         });
 
         Assertions.assertThrows(ParameterValidateException.class, () -> {
-            productService.checkValidateParam(createProductInfoReq(1, minusPromotionIds));
+            createProductInfoReq(1, minusPromotionIds).checkValidateParam();
         });
 
         Assertions.assertDoesNotThrow(
-            () ->  productService.checkValidateParam(createProductInfoReq(1, promotionIds))
+            () ->  createProductInfoReq(1, promotionIds).checkValidateParam()
         );
     }
 
